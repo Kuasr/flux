@@ -1,4 +1,4 @@
-import { Action } from "./Action";
+import { Action } from "../Action/Action";
 
 export class ActionThunk {
 

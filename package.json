@@ -29,6 +29,8 @@
   },
   "homepage": "https://github.com/Kuasr/flux#readme",
   "dependencies": {
+    "@types/fbemitter": "^2.0.32",
+    "fbemitter": "^3.0.0",
     "tsc": "^2.0.4"
   },
   "devDependencies": {

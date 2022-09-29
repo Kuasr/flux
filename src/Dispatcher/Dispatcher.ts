@@ -1,5 +1,5 @@
-import { Action } from "./Action";
-import { ActionThunk } from "./ActionThunk";
+import { Action } from "../Action/Action";
+import { ActionThunk } from "../ActionThunk/ActionThunk";
 import { DispatchPool } from "./DispatchPool";
 import { DispatchToken } from "./DispatchToken";
 import { DispatcherError } from "./DispatcherError";
@@ -47,6 +47,10 @@ export class Dispatcher {
     public dispatch(action: Action): void {
         if (this.isDispatching) throw new DispatcherError('Error on Dispatcher.dispatch(...)', 'Cannot dispatch during another dispatch')
         this.startDispatching(action)
+    }
+
+    public isBusy(): boolean {
+        return !this.isDispatching
     }
 
     private thunkNotExists(id: DispatchToken): boolean {

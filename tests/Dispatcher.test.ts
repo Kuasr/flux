@@ -1,5 +1,5 @@
 import chai from "chai";
-import {Action, ActionThunk, Dispatcher, DispatcherError, DispatchToken} from "../src";
+import {Action, ActionThunk, Dispatcher, DispatchToken} from "../src";
 import {before} from "mocha";
 
 const expect = chai.expect
@@ -40,6 +40,9 @@ const testUnregister = () => describe('Testing Dispatcher.unregister(...)', () =
         expect(() => dispatcher.unregister(token))
             .to.throw('There are no thunks with token: ' + token)
     })
+})
+
+const testDispatch = () => describe('Testing Dispatcher.dispatch(...)', () => {
 
 })
 
