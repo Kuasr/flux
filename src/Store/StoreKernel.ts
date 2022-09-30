@@ -1,7 +1,7 @@
 import {EventEmitter} from 'fbemitter'
 
 import {Dispatcher} from "../Dispatcher/Dispatcher";
-import {ActionThunk} from "../ActionThunk/ActionThunk";
+import {ActionThunk} from "../Action/ActionThunk";
 import {Action} from "../Action/Action";
 import {DispatchListener} from "./DispatchListener";
 import {EventSubscription} from "./EventSubscription";
@@ -10,7 +10,7 @@ import {StoreError} from "./StoreError";
 
 export abstract class StoreKernel {
 
-    private dispatchToken: DispatchToken
+    private readonly dispatchToken: DispatchToken
 
     protected changed: boolean
     protected changeEvent: string
@@ -18,7 +18,7 @@ export abstract class StoreKernel {
     protected dispatcher: Dispatcher
     protected emitter: EventEmitter
 
-    constructor() {
+    protected constructor() {
         this.className = this.constructor.name
         this.changed = false
         this.changeEvent = 'change'

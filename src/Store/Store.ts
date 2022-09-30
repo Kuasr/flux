@@ -5,8 +5,8 @@ import {ReduceStoreError} from "./ReduceStoreError";
 export abstract class Store<State> extends StoreKernel {
     private state: State
 
-    constructor() {
-        super();
+    protected constructor() {
+        super()
         this.state = this.getInitialState()
     }
 

@@ -1,5 +1,5 @@
 import { Action } from "../Action/Action";
-import { ActionThunk } from "../ActionThunk/ActionThunk";
+import { ActionThunk } from "../Action/ActionThunk";
 import { DispatchPool } from "./DispatchPool";
 import { DispatchToken } from "./DispatchToken";
 import { DispatcherError } from "./DispatcherError";
@@ -40,13 +40,18 @@ export class Dispatcher {
         ids.map( (id: DispatchToken) => {
             if (this.isPendingAndNotHandled(id)) throw new DispatcherError('Error on Dispatcher.waitFor(...)', 'Circular dependency detected waiting for ' + id )
             if (this.thunkNotExists(id)) throw new DispatcherError('Error on Dispatcher.waitFor(...)', 'There are no thunks with token: ' + id)
-            this.runPendingAction(id);
+            this.invokeActionThunk(id);
         })
     }
 
     public dispatch(action: Action): void {
         if (this.isDispatching) throw new DispatcherError('Error on Dispatcher.dispatch(...)', 'Cannot dispatch during another dispatch')
         this.startDispatching(action)
+        try {
+            this.dispatchAvailableThunks()
+        } finally {
+            this.stopDispatching()
+        }
     }
 
     public isBusy(): boolean {
@@ -61,10 +66,16 @@ export class Dispatcher {
         return this.isPending[id] && !this.isHandled[id];
     }
 
-    private runPendingAction(id: DispatchToken): void {
+    private invokeActionThunk(id: DispatchToken): void {
         this.isPending[id] = true
         this.thunks[id].run(this.pendingAction!)
         this.isHandled[id] = true
+    }
+
+    private dispatchAvailableThunks(): void {
+        for (let token in this.thunks) {
+            if (!this.isPending[token]) this.invokeActionThunk(token)
+        }
     }
 
     private startDispatching(action: Action): void {
