@@ -1,5 +1,5 @@
-import { Action } from "./Action";
-import { ActionThunk } from "./ActionThunk";
+import { Action } from "../Action/Action";
+import { ActionThunk } from "../Action/ActionThunk";
 import { DispatchToken } from "./DispatchToken";
 export declare class Dispatcher {
     private static instance;
@@ -16,9 +16,11 @@ export declare class Dispatcher {
     unregister(id: DispatchToken): void;
     waitFor(ids: Array<DispatchToken>): void;
     dispatch(action: Action): void;
+    isBusy(): boolean;
     private thunkNotExists;
     private isPendingAndNotHandled;
-    private runPendingAction;
+    private invokeActionThunk;
+    private dispatchAvailableThunks;
     private startDispatching;
     private stopDispatching;
 }
