@@ -56,5 +56,62 @@ Action Thunks are basically logic functions that are stored in the dispatcher an
 Views are objects that display data saved in the stores. They are usually components of a framework, usually React components or even web components. When a view uses data from a store it must also subscribe to change events from that store. Then when the store emits a change the view can get the new data and re-render. Some actions are dispatched from views as the user interacts with parts of the interface.
 
 # Getting started
+You can install Kuasr Flux running the command `npm install kuasr-flux` in your project. You can use the dispatcher by the following line of code:
 
-Start by looking through the [guides and examples](./examples) on Github. For more resources and API docs check out [facebook.github.io/flux](https://facebook.github.io/flux).
+```typescript
+const dispatcher: Dispatcher = Dispatcher.use()
+```
+
+To save the state you need to create a new class that extends `Store`:
+```typescript
+class UserStore extends Store<UserState> {
+    
+    getInitialState(): UserState {
+        return UserState.empty();
+    }
+    
+    reduce(state: UserState, action: Action): UserState {
+        const user: User = action.payload.user
+        if (action.type == 'USER::MODIFY_EMAIL') state.setEmail(user.id, user.email)
+        if (action.type == 'USER::ADD_USER') state.addUser(user)
+        return state
+    }
+    
+}
+```
+
+Now you can register `ActionThunk` like this:
+
+```typescript
+import {DispatchToken} from "./DispatchToken";
+
+const modifyEmailThunk: ActionThunk = new ActionThunk( (action: Action) => {
+    if (action.type == 'USER::MODIFY_EMAIL') userStore.reduce(action.payload)
+})
+
+const token: DispatchToken = dispatcher.register(modifyEmailThunk)
+```
+
+Then you can dispatch actions using `Dispatcher`:
+```typescript
+const action: Action = new Action('USER::MODIFY_EMAIL', user)
+
+dispatcher.dispatch(action)
+```
+
+You can use `waitFor()` to run an `ActionThunk` only when passed `ActionThunks` have been run:
+
+```typescript
+const modifyEmailToken: DispatchToken = dispatcher.register(modifyEmailThunk)
+
+const sendMailThunk: ActionThunk = new ActionThunk( (action: Action) => {
+    if (action.type == 'USER::SEND_MAIL') {
+        dispatcher.waitFor([modifyEmailToken])
+        mailService.sendMail(action.payload)
+    }
+})
+const sendMailToken: DispatchToken = dispatcher.register(sendMailThunk)
+```
+
+# License
+Copyright 2022 Kuasr. Licensed [MIT](https://github.com/kuasr/flux/blob/master/LICENSE).

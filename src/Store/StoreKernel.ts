@@ -47,11 +47,8 @@ export abstract class StoreKernel {
 
     protected invokeOnDispatch(action: Action): void {
         this.changed = false
-        this.onDispatch(action)
         if (this.changed) this.emitter.emit(this.changeEvent)
     }
-
-    protected abstract onDispatch(action: Action): void
 
     private initialThunk(): ActionThunk {
         return new ActionThunk((action: Action) => this.invokeOnDispatch(action))
