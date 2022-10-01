@@ -23,7 +23,7 @@
     "pattern"
   ],
   "author": "Kuasr",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Kuasr/flux/issues"
   },
