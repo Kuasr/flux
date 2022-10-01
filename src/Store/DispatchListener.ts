@@ -1,0 +1,1 @@
+export type DispatchListener = (eventType?: string) => void
