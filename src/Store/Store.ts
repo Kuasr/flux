@@ -1,12 +1,13 @@
 import {StoreKernel} from "./StoreKernel";
 import {Action} from "../Action/Action";
 import {ReduceStoreError} from "./ReduceStoreError";
+import {Dispatcher} from "../Dispatcher/Dispatcher";
 
 export abstract class Store<State> extends StoreKernel {
     private state: State
 
-    protected constructor() {
-        super()
+    protected constructor(dispatcher: Dispatcher<Action>) {
+        super(dispatcher)
         this.state = this.getInitialState()
     }
 

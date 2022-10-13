@@ -15,20 +15,24 @@ export abstract class StoreKernel {
     protected changed: boolean
     protected changeEvent: string
     protected className: any
-    protected dispatcher: Dispatcher
+    protected dispatcher: Dispatcher<any>
     protected emitter: EventEmitter
 
-    protected constructor() {
+    protected constructor(dispatcher: Dispatcher<any>) {
         this.className = this.constructor.name
         this.changed = false
         this.changeEvent = 'change'
-        this.dispatcher = Dispatcher.use()
+        this.dispatcher = dispatcher
         this.emitter = new EventEmitter()
         this.dispatchToken = this.dispatcher.register(this.initialThunk())
     }
 
     public addListener(dispatchListener: DispatchListener): EventSubscription {
         return this.emitter.addListener(this.changeEvent, dispatchListener)
+    }
+
+    public getDispatcher(): Dispatcher<any> {
+        return this.dispatcher
     }
 
     public getDispatchToken(): DispatchToken {
@@ -50,7 +54,7 @@ export abstract class StoreKernel {
         if (this.changed) this.emitter.emit(this.changeEvent)
     }
 
-    private initialThunk(): ActionThunk {
+    private initialThunk(): ActionThunk<any> {
         return new ActionThunk((action: Action) => this.invokeOnDispatch(action))
     }
 }

@@ -4,27 +4,18 @@ import { DispatchPool } from "./DispatchPool";
 import { DispatchToken } from "./DispatchToken";
 import { DispatcherError } from "./DispatcherError";
 
-export class Dispatcher {
+export class Dispatcher<T extends Action> {
 
-    private static instance: Dispatcher
-
-    private thunks: DispatchPool<ActionThunk> = {}
+    private thunks: DispatchPool<ActionThunk<T>> = {}
     private isDispatching: boolean = false
     private isHandled: DispatchPool<boolean> = {}
     private isPending: DispatchPool<boolean> = {}
     private lastID: number = 1
-    private pendingAction?: Action
+    private pendingAction?: T
 
     private readonly TOKEN_PREFIX: string = 'ID_'
 
-    private constructor() {}
-
-    public static use(): Dispatcher {
-        if (Dispatcher.instance) return Dispatcher.instance
-        return new Dispatcher()
-    }
-
-    public register(thunk: ActionThunk): DispatchToken {
+    public register(thunk: ActionThunk<T>): DispatchToken {
         const id: DispatchToken = this.TOKEN_PREFIX + this.lastID++
         this.thunks[id] = thunk
         return id
@@ -44,7 +35,7 @@ export class Dispatcher {
         })
     }
 
-    public dispatch(action: Action): void {
+    public dispatch(action: T): void {
         if (this.isDispatching) throw new DispatcherError('Error on Dispatcher.dispatch(...)', 'Cannot dispatch during another dispatch')
         this.startDispatching(action)
         try {
@@ -78,7 +69,7 @@ export class Dispatcher {
         }
     }
 
-    private startDispatching(action: Action): void {
+    private startDispatching(action: T): void {
         for (let token in this.thunks) {
             this.isPending[token] = false
             this.isHandled[token] = false
