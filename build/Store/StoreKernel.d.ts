@@ -17,6 +17,5 @@ export declare abstract class StoreKernel {
     hasChanged(): boolean;
     protected emitChange(): void;
     protected invokeOnDispatch(action: Action): void;
-    protected abstract onDispatch(action: Action): void;
     private initialThunk;
 }
