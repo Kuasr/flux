@@ -9,10 +9,11 @@ export declare abstract class StoreKernel {
     protected changed: boolean;
     protected changeEvent: string;
     protected className: any;
-    protected dispatcher: Dispatcher;
+    protected dispatcher: Dispatcher<any>;
     protected emitter: EventEmitter;
-    protected constructor();
+    protected constructor(dispatcher: Dispatcher<any>);
     addListener(dispatchListener: DispatchListener): EventSubscription;
+    getDispatcher(): Dispatcher<any>;
     getDispatchToken(): DispatchToken;
     hasChanged(): boolean;
     protected emitChange(): void;

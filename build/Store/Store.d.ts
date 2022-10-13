@@ -1,6 +1,6 @@
 import { StoreKernel } from "./StoreKernel";
 import { Action } from "../Action/Action";
-import {Dispatcher} from "../Dispatcher/Dispatcher";
+import { Dispatcher } from "../Dispatcher/Dispatcher";
 export declare abstract class Store<State> extends StoreKernel {
     private state;
     protected constructor(dispatcher: Dispatcher<Action>);

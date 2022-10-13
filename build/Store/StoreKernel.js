@@ -2,20 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StoreKernel = void 0;
 const fbemitter_1 = require("fbemitter");
-const Dispatcher_1 = require("../Dispatcher/Dispatcher");
 const ActionThunk_1 = require("../Action/ActionThunk");
 const StoreError_1 = require("./StoreError");
 class StoreKernel {
-    constructor() {
+    constructor(dispatcher) {
         this.className = this.constructor.name;
         this.changed = false;
         this.changeEvent = 'change';
-        this.dispatcher = Dispatcher_1.Dispatcher.use();
+        this.dispatcher = dispatcher;
         this.emitter = new fbemitter_1.EventEmitter();
         this.dispatchToken = this.dispatcher.register(this.initialThunk());
     }
     addListener(dispatchListener) {
         return this.emitter.addListener(this.changeEvent, dispatchListener);
+    }
+    getDispatcher() {
+        return this.dispatcher;
     }
     getDispatchToken() {
         return this.dispatchToken;
