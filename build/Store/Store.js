@@ -4,8 +4,8 @@ exports.Store = void 0;
 const StoreKernel_1 = require("./StoreKernel");
 const ReduceStoreError_1 = require("./ReduceStoreError");
 class Store extends StoreKernel_1.StoreKernel {
-    constructor() {
-        super();
+    constructor(dispatcher) {
+        super(dispatcher);
         this.state = this.getInitialState();
     }
     getState() {

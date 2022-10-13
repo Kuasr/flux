@@ -11,11 +11,6 @@ class Dispatcher {
         this.lastID = 1;
         this.TOKEN_PREFIX = 'ID_';
     }
-    static use() {
-        if (Dispatcher.instance)
-            return Dispatcher.instance;
-        return new Dispatcher();
-    }
     register(thunk) {
         const id = this.TOKEN_PREFIX + this.lastID++;
         this.thunks[id] = thunk;

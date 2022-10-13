@@ -1,10 +1,10 @@
 import { Action } from "./Action";
 
-export class ActionThunk {
+export class ActionThunk<T extends Action> {
 
-    constructor(private readonly logicFunction: (action: Action) => void) {}
+    constructor(private readonly logicFunction: (action: T) => void) {}
 
-    public run(action: Action): void {
+    public run(action: T): void {
         return this.logicFunction(action)
     }
 

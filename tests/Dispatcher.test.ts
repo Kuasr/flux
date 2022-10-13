@@ -3,19 +3,12 @@ import {Action, ActionThunk, Dispatcher, DispatchToken} from "../src";
 import {after, before} from "mocha";
 
 const expect = chai.expect
-const dispatcher = Dispatcher.use()
+const dispatcher = new Dispatcher<Action>();
 let tested: boolean = false
-const thunk: ActionThunk = new ActionThunk((action:Action) => tested = true)
+const thunk: ActionThunk<Action> = new ActionThunk((action:Action) => tested = true)
 const TYPE: string = 'ACTION'
 const action: Action = new Action(TYPE, true)
 
-const testDispatcher = () => describe('Testing Dispatcher singleton', () => {
-    it('should return a new dispatcher', () => { expect(dispatcher instanceof Dispatcher) })
-    it('should be the same instance', () => {
-        const newDispatcher = Dispatcher.use()
-        expect(dispatcher === newDispatcher)
-    })
-})
 
 const testRegister = () => describe('Testing Dispatcher.register(...)', () => {
     let token: DispatchToken
@@ -45,7 +38,7 @@ const testUnregister = () => describe('Testing Dispatcher.unregister(...)', () =
 
 const testDispatch = () => describe('Testing Dispatcher.dispatch(...)', () => {
     let token: DispatchToken
-    const actionThunk: ActionThunk = new ActionThunk((action: Action) => {
+    const actionThunk: ActionThunk<Action> = new ActionThunk((action: Action) => {
         if (action.type == TYPE) tested = true
     })
     
@@ -70,9 +63,9 @@ const testWaitFor = () => describe('Testing Dispatcher.waitFor(...)', () => {
     let secondToken: DispatchToken
 
     const dummyAction: Action = new Action('SECOND_ACTION', true)
-    const dummyThunk: ActionThunk = new ActionThunk((action: Action) => { if (action.type == 'SECOND_ACTION') tested = false })
+    const dummyThunk: ActionThunk<Action> = new ActionThunk((action: Action) => { if (action.type == 'SECOND_ACTION') tested = false })
 
-    const actionThunk: ActionThunk = new ActionThunk((action: Action) => {
+    const actionThunk: ActionThunk<Action> = new ActionThunk((action: Action) => {
         if (action.type == TYPE) {
             dispatcher.waitFor([token])
             tested = true
@@ -100,7 +93,6 @@ const testWaitFor = () => describe('Testing Dispatcher.waitFor(...)', () => {
     })
 })
 
-testDispatcher()
 testRegister()
 testUnregister()
 testDispatch()
