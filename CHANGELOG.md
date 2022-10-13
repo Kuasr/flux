@@ -4,6 +4,18 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## Unreleased
 
+## [1.0.3](https://github.com/kuasr/flux/tree/1.0.3)
+### Fix
+- *Update exports.* @Losina24
+
+## [1.0.2](https://github.com/kuasr/flux/tree/1.0.2)
+### Fix
+- *Fix nomenclature.* @Losina24
+
+## [1.0.1](https://github.com/kuasr/flux/tree/1.0.1)
+### Fix
+- *Fix nomenclature.* @Losina24
+
 ## [1.0.0](https://github.com/kuasr/flux/tree/1.0.0)
 ### Added
 - *Create README.* @Losina24

@@ -32,7 +32,6 @@ class StoreKernel {
     }
     invokeOnDispatch(action) {
         this.changed = false;
-        this.onDispatch(action);
         if (this.changed)
             this.emitter.emit(this.changeEvent);
     }
