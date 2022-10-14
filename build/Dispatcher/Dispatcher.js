@@ -44,7 +44,7 @@ class Dispatcher {
         }
     }
     isBusy() {
-        return !this.isDispatching;
+        return this.isDispatching;
     }
     thunkNotExists(id) {
         return this.thunks[id] == undefined;
