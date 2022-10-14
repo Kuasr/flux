@@ -1,11 +1,12 @@
 import chai from "chai";
 import {Store, Dispatcher} from '../src'
+import Immutable from "immutable"
 
 const expect = chai.expect
 
 class FooStore extends Store<any> {
     getInitialState() {
-        return new Map<string, boolean>();
+        return Immutable.Map()
     }
 
     constructor(dispatcher: Dispatcher<any>) {
@@ -92,6 +93,11 @@ const testStore = () => describe('Testing Store', () => {
         });
 
         expect(store.getState().get('foo')).to.be.equal(100);
+
+        dispatch({type: 'boom'});
+
+        expect(store.getState().get('foo')).to.be.equal(undefined);
+        expect(store.getState().has('foo')).to.be.equal(false);
     });
 })
 
