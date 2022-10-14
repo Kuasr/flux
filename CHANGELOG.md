@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## Unreleased
 
+## [1.1.1](https://github.com/kuasr/flux/tree/1.1.1)
+### Fix
+- *Fix dispatcher emitting changes.* @Losina24
+
 ## [1.1.0](https://github.com/kuasr/flux/tree/1.1.0)
 ### Change
 - *Modify dispatcher to allow multiple instances.* @Losina24

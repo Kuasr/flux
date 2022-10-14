@@ -1,18 +1,19 @@
 import chai from "chai";
 import {Action, ActionThunk, Dispatcher, DispatchToken, Store} from "../src";
 import {after, before} from "mocha";
+import Immutable from "immutable";
 
 const expect = chai.expect
 const dispatcher: Dispatcher<Action> = new Dispatcher<Action>()
 
 class ActionT extends Action{
     constructor() {
-        super('action', 'action');
+        super('action', true);
     }
 }
 
 class State {
-    constructor(public value: Map<string, boolean>) {}
+    constructor(public value: Immutable.Map<string, boolean>) {}
 }
 
 class DummyStore extends Store<State> {
@@ -22,11 +23,11 @@ class DummyStore extends Store<State> {
     }
 
     getInitialState(): State {
-        return new State(new Map<string, boolean>())
+        return new State(Immutable.Map<string, boolean>())
     }
 
-    reduce(state: State, action: Action): any {
-        if(action.type == 'action') return state.value
+    reduce(state: State, action: ActionT): State {
+        if(action.type == 'action') return new State(Immutable.Map<string,boolean>().set('action', true))
         return state
     }
 
@@ -34,19 +35,15 @@ class DummyStore extends Store<State> {
 
 const testIntegration = () => describe('Testing module', () => {
     let action: ActionT = new ActionT()
-    let a = 0
-    let thunk: ActionThunk<ActionT> = new ActionThunk((action: ActionT) => {
-        if (action.type == 'action') a = 1
-    })
-    let token: DispatchToken
+    let store: DummyStore = new DummyStore(dispatcher)
+
 
     before(() => {
-        token = dispatcher.register(thunk)
         dispatcher.dispatch(action)
     })
 
     it('should be able to change the state', () => {
-        expect(a == 1).to.be.true
+        expect(store.getState().value.get('action') == true).to.be.true
     });
 })
 

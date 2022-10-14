@@ -46,7 +46,7 @@ export class Dispatcher<T extends Action> {
     }
 
     public isBusy(): boolean {
-        return !this.isDispatching
+        return this.isDispatching
     }
 
     private thunkNotExists(id: DispatchToken): boolean {
