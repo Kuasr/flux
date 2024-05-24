@@ -114,4 +114,4 @@ const sendMailToken: DispatchToken = dispatcher.register(sendMailThunk)
 ```
 
 # License
-Copyright 2022 Kuasr. Licensed [MIT](https://github.com/kuasr/flux/blob/master/LICENSE).
+Copyright 2024 Kuasr. Licensed [MIT](https://github.com/kuasr/flux/blob/master/LICENSE).
